@@ -101,7 +101,6 @@ class BankAccountLine(models.Model):
         debit, credit = self.amount_transfered(acct, last_day)
         #print('----- Debit Credit', debit, credit)
         start_date = date(last_day.year, 1, 1)
-        print('--------Day---------------------',start_date,last_day,acct.name,self.env.user.id)
         account_line_id = self.env['bank.account.line'].sudo().search([('bank_id','=',acct.id),
                                                                           ('year','=',str(last_day.year))])
         self._cr.execute("""select sum(amount) from expense_summary where date >= %s AND date <= %s 
@@ -115,7 +114,6 @@ class BankAccountLine(models.Model):
                              ((start_date, last_day, acct.id)))
         
         total_inc = self.env.cr.fetchall()
-        print('-----', total_inc, total_inc[0][0])
         if total_inc:
             total_income = total_inc[0][0] or 0.0
         if total_exp:
@@ -135,7 +133,6 @@ class BankAccountLine(models.Model):
         year = self.env['budget.year'].search([('name','=', 2021)])
         year1 = self.env['budget.year'].search([('name','=', 2020)])
 
-        print('22222=============last_day',last_day,type(last_day),'----year-------',year)
         accounts = self.env['bank.account'].search([])
         for account in accounts:
             current_opening_balance = self.search([('bank_id','=', account.id),('year','=', year.id)])
