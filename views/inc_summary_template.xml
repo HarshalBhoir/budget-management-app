@@ -1,0 +1,160 @@
+<?xml  version="1.0" encoding="utf-8" ?>
+<odoo>
+
+ <template id="inc_summ_template" name="Income Form">
+ 
+  	<t t-call="website.layout">
+        <div class="oe_structure">
+          <div class="container form-top">
+          	 <form id="incomeForm"  data-model_name="income.summary" method="POST">
+          	 
+                        <div class="form-group row form-field o_website_form_required_custom">
+                            <label class="col-lg-3 col-md-4 col-form-label" for="date">Date</label>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input" name="date" t-att-value="request.params.get('date', '')" required=""/>
+                            </div>
+                        </div>
+                        <div required="" class="form-group row form-field o_website_form_required_custom">
+                            <label class="col-lg-3 col-md-4 col-form-label" for="account">Account</label>
+                            <div class="col-lg-7 col-md-8">
+                            
+ 								<select  class="form-control" name="account">
+ 									<option t-att-selected="Select">Select</option>
+								     <t t-foreach="accounts" t-as="account">
+								          <option required="" t-attf-value="#{account.id}" ><t t-esc="account.name"/></option>
+								     </t>
+								 </select> 
+ 
+ 						</div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required_custom">
+                            <label class="col-lg-3 col-md-4 col-form-label" for="category">Category</label>
+                            <div class="col-lg-7 col-md-8">
+<!--                                 <input type="text" class="form-control o_website_form_input" name="category" required="" t-att-value="request.params.get('category', '')" />
+ -->
+ 							<select  class="form-control o_website_form_required_custom" name="category">
+ 									<option >Select</option>
+								     <t t-foreach="categories" t-as="category">
+								          <option required="" t-attf-value="#{category.id}" ><t t-esc="category.name"/></option>
+								     </t>
+								 </select> 
+                             </div>
+                        </div>
+                        
+                        <div class="form-group row form-field o_website_form_required">
+                            <label class="col-lg-3 col-md-4 col-form-label" for="income_amount">Income Amount</label>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="income_amount" required="" t-att-value="request.params.get('income_amount', '')" />
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required_custom">
+                            <label class="col-lg-3 col-md-4 col-form-label" for="name">Description</label>
+                            <div class="col-lg-7 col-md-8">
+                                <textarea class="form-control o_website_form_input" name="name" required=""><t t-esc="request.params.get('name', '')"/></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                           <button type="submit" class="btn btn-primary menu_button">Add Income</button>
+                        </div>
+                    </form>
+          </div>
+         </div>
+         
+     </t>
+	
+ </template>
+ 
+ 
+ <template id="my_incomes_template" >
+ 
+  	<t t-call="website.layout">
+        <div class="oe_structure">
+          <div class="container">
+          	 <p>
+          	 You have successfully added Income.
+          	 </p>
+          </div>
+         </div>
+         
+     </t>
+ </template>
+ 
+<template id="portal_my_incomes" name="All Income">
+	        <t t-call="portal.portal_layout">
+	        <script type="text/javascript" src="/budget_expense_management/static/src/js/update_income.js" />
+	            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+	            <t t-call="portal.portal_searchbar" class="breadcrumb-item active">
+	                <t t-set="title">Incomes</t>
+	            </t>
+			        <div class="alert alert-success alert-dismissable">
+			            <button type="button" class="close" data-dismiss="alert" aria-label="Close" >&amp;times;</button>
+			            Success! your income has been saved.
+			        </div>
+
+	            <t t-if="not my_incomes">
+	                <p>There are currently no income for your account.</p>
+	            </t>
+	            <t t-if="my_incomes" t-call="portal.portal_table">
+	                <thead>
+	                    <tr class="active">
+	                        <th class="text-right">Date</th>
+	                        <th class="text-right">Category</th>
+	                        <th class="text-right">Description</th>
+	                        <th class="text-right">Account</th>
+	                        <th class="text-right">Amount Recieved</th>
+	                    </tr>
+	                </thead>
+	                
+	                <t t-foreach="my_incomes" t-as="income">
+	                
+	                <input type="hidden" id="all_account_ids"  t-att-value="accounts"/>
+	                <input type="hidden" id="all_categories"  t-att-value="catg_ids"/>
+	                    <tr>	
+		                    <td  class="text-right"> <input type="hidden" id="datepicker" /><span id= "date" t-field="income.date" /></td>
+		                   
+	                        <td id="catg" class="text-right">
+	                        	<span t-field="income.income_categ_id.name"/>
+	                        	<select style="display:none" name="catg_dropdown" id="catg_dropdown">
+										 <t t-foreach="catg_ids" t-as="category" >
+									     <option t-att-value="category" t-att-selected="category == income.income_categ_id.name"><t t-esc='category' /></option>   
+										  </t>
+									</select>
+	                        
+	                        </td>
+	                        <td class="text-right" ><span t-field="income.name"/></td>
+	                        <td id="acct" class="text-right" >
+	                        	<span t-field="income.account_journal_id.name"/>
+	                        	<select style="display:none" name="account_dropdown" id="account_dropdown">
+								
+								 <t t-foreach="accounts" t-as="account" >
+							     <option t-att-value="account" t-att-selected="account == income.account_journal_id.name"><t t-esc='account' /></option>   
+								  </t>
+							</select>
+                            </td>
+	                        <td class="text-right"><span t-field="income.amount"/></td>    
+	                        <td class="text-right">
+	            <button  t-att-value="income.id" id="edit_income" name="edit_income" class="btn btn-primary fa fa-edit"></button>
+	                        </td>
+	                        <td class="text-right">
+	            <button  t-att-value="income.id"  id="save_income" name="save_income" class="btn btn-primary fa fa-save"></button>
+	                        </td>
+	                        <td class="text-right">
+	            <button  t-att-id="'button_id_%s' % (income.id)" name="del_income"  t-att-value="income.id" class="btn btn-primary fa fa-trash-o"></button>
+	                        </td>
+	                    </tr>
+	                </t>
+	            </t>
+	            
+	        </t>
+	    </template>
+	    
+	    <template id="budget_portal_income" inherit_id="portal.portal_breadcrumbs" >
+		<xpath expr="//ol[hasclass('o_portal_submenu')]/li" position="inside">
+			<t t-if="my_incomes" >
+			<span> /Incomes </span>
+			</t>
+		 </xpath>
+	
+	</template>
+ 
+ </odoo>

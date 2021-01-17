@@ -1,0 +1,29 @@
+<?xml  version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <!-- <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+             <script type="text/javascript" src="/budget_expense_management/static/src/js/chatter.js" />
+             
+        </xpath>
+    </template>
+     -->
+    <template id="assets_frontend_exp1" name="account new assets" inherit_id="web.assets_frontend" active="True">
+        <xpath expr="." position="inside">
+        
+           <script  type="text/javascript" src="/budget_expense_management/static/src/js/change_month.js" />
+           <script  type="text/javascript" src="/budget_expense_management/static/src/js/annual_summary_year.js" />
+  			
+			<script  type="text/javascript" src="/budget_expense_management/static/src/js/expense_form_submit.js" />
+			<script  type="text/javascript" src="/budget_expense_management/static/src/js/income_form_submit.js" />
+	        
+          	<script type="text/javascript" src="/budget_expense_management/static/src/js/cash_transfer.js" />
+			<link rel="stylesheet" href="/budget_expense_management/static/src/css/budget.css"/>
+			
+						
+        </xpath>
+    </template>
+    
+   
+    
+</odoo>
