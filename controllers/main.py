@@ -162,9 +162,10 @@ class BudgetMonthlyReport(http.Controller):
     def account_sum(self, investment_acc=True):
         today = fields.Date.today()
         if investment_acc:  
-            account_ids = request.env['bank.account'].sudo().search([("type", '=', 'investment')])
+            account_ids = request.env['bank.account'].sudo().search([('type', '=', 'investment')])
         else:
-            account_ids = request.env['bank.account'].sudo().search([("type", '!=', 'investment')])
+            account_ids = request.env['bank.account'].sudo().search([('type', '!=', 'investment'),
+                                                                     ('type', '!=', 'loan')])
         current_balance = 0
         for acct in account_ids:
             current_balance += acct.account_balance(acct, today)
