@@ -141,13 +141,12 @@
  
 		            <div class="col-lg-4" >
 				 	       <div >
-					 	       
 					            <h4  class="card-header bg-primary text-center">Income</h4>
 					            <div class="table-responsive ">
 						            <table class="table" border="1" style="border:1px solid #dee2e6;">
 						            	<thead>
 										    <tr >
-										   		<th style="border-right:1px solid #dee2e6;">Category</th>
+									   		<th style="border-right:1px solid #dee2e6;">Category</th>
 										        <th style="border-right:1px solid #dee2e6;">Planned</th>
 										        <th style="border-right:1px solid #dee2e6;">Actual</th>
 										        <th style="border-right:1px solid #dee2e6;">Diff</th>
@@ -168,10 +167,10 @@
 										          </tr> 
 												</t>
 												 <tr class="card-footer bg-primary">
-											  		<td style="border-right:1px solid #00A09D;"><strong>Total</strong></td>
+										  		<td style="border-right:1px solid #00A09D;"><strong>Total</strong></td>
 										          	<td style="border-right:1px solid #00A09D; font-weight:bold;">$<t  t-esc="round(sum([income_details[inc]['planned'] for inc in income_details.keys()]))" /> </td>
 										          	<td style="border-right:1px solid #00A09D; font-weight:bold;">$<t  t-esc="round(sum([income_details[inc]['actual'] for inc in income_details.keys()]))" /> </td>
-s											        <t t-set="diff" t-value="round(sum([(income_details[inc]['actual'] - income_details[inc]['planned']) for inc in income_details.keys()]))"/>
+											        <t t-set="diff" t-value="round(sum([(income_details[inc]['actual'] - income_details[inc]['planned']) for inc in income_details.keys()]))"/>
 									          		<td style="border-right:1px solid #dee2e6;">
 									          			<t t-if="diff and (diff &gt;= 0)"><span  style="font-weight:bold;">$<t t-esc="diff"/></span></t>
 														<t t-if="diff and (diff &lt; 0)"><span  style="font-weight:bold;">-$<t t-esc="abs(diff)"/></span></t>
