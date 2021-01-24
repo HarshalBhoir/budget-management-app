@@ -75,7 +75,7 @@
 		                            <t t-foreach='years' t-as='year'>
 		                            <!-- <input type="text" t-att-value="year" />
 		                             <input type="text" t-att-value="current_year" /> -->
-		                                <option t-att-value="year" t-att-selected="year == current_year">
+		                                <option t-att-value="year" t-att-selected="int(year) == int(current_year)">
 		                                    <t t-esc='year' />
 		                                </option>
 		                            </t>
