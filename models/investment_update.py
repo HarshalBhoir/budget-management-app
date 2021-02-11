@@ -14,9 +14,6 @@ class InvestmentInterest(models.Model):
     amount = fields.Float('Current Amount',copy=False)
     bank_id = fields.Many2one('bank.account','Account')
     
-
-    
-    
     @api.model
     def create(self, vals):
         res = super(InvestmentInterest, self).create(vals) 

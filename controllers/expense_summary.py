@@ -1,14 +1,14 @@
 from odoo import fields, api, models, http, tools, _
 from odoo.http import request, Response
 from datetime import timedelta, date, datetime
-from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
 import calendar, json
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
-
+from .main import mypager
+PPG = 20
 
 
 class ExpenseSummary(http.Controller):
-    
+
     @http.route('/expense_form', type='http', method="GET", auth='user', website=True, csrf=False)
     def render_expense_form(self, **kwargs):
         """
@@ -18,8 +18,7 @@ class ExpenseSummary(http.Controller):
         accounts = request.env['bank.account'].search([])
         return request.render('budget_expense_management.expense_form_template',{'categories': categories,
                                                                              'accounts':accounts})
-     
-     
+
     @http.route('/my_expenses', type='json', auth="user", 
                 website=True, methods=['DELETE'],  csrf=False) 
     def delete_expense(self, **kwargs):
@@ -28,14 +27,13 @@ class ExpenseSummary(http.Controller):
         """
         data = json.loads(request.httprequest.data.decode('utf-8'))
 
-               
+
         if 'expense_id' in data:
             expense_summary = request.env['expense.summary'] 
             record_to_delete = expense_summary.browse(data['expense_id']).unlink()
 
         return Response("success", status=200)
-    
-    
+
     @http.route('/my_expenses', type='json', auth="user", 
                 website=True, methods=['PATCH'],  csrf=False) 
     def update_expense(self, **kwargs):
@@ -65,15 +63,11 @@ class ExpenseSummary(http.Controller):
                     exp_id.amount = float(data['amount'].replace(',',''))
         except Exception as exc:
             print(exc)
-            #data = {'result': 'failure'}
-            #return Response(json.dumps({"no":"i am json"}),content_type='application/json;charset=utf-8',status=410)
             Response.status = "400"
             return "Error"
-                    
-        #return Response(json.dumps({"yes":"i am json"}),content_type='application/json;charset=utf-8',status=200)
         Response.status = "200"
         return "success"
-        
+
     @http.route('/my_expenses', type='http', auth="user", 
                 website=True, methods=['POST'],  csrf=False)
     def add_expense(self, **post):
@@ -91,25 +85,36 @@ class ExpenseSummary(http.Controller):
                     'user_id': request.env.user.id or False
         })
         return Response("success", status=200)
-    
-    @http.route('/my_expenses', type='http', auth="user", 
-                website=True, methods=['GET'],  csrf=False)
-    def show_expense(self, **post):
+
+    @http.route([
+        '/my_expenses',
+        '/my_expenses/page/<int:page>',
+    ], type='http', auth="user", methods=['GET'], website=True, csrf=False)
+    def show_expense(self, page=0, ppg=False,  **post):
         """
         Return all expenses
         """
+        if ppg:
+            try:
+                ppg = int(ppg)
+            except ValueError:
+                ppg = PPG
+            post["ppg"] = ppg
+        else:
+            ppg = PPG
         expense_summary = request.env['expense.summary']
         domain = [('user_id','=', request.env.user.id),('date','<=',fields.Date.today())]
-        expenses = expense_summary.search(domain)
+        expenses = expense_summary.sudo().search(domain, order=post.get('order'))
         exp_catg_ids = request.env['expense.category'].search([]).mapped('name')
         account_id_list = request.env['bank.account'].search([]).mapped('name')
-        values = { 
-                    'my_expenses': expenses.sudo(), 
+
+        pager = mypager(self, url='/my_expenses', total=len(expenses), page=page, step=ppg)
+        offset = pager['offset']
+        expenses = expenses[offset: offset + ppg]
+        values = {
+                    'my_expenses': expenses,
                     'catg_ids' : exp_catg_ids,
-                    'accounts' :account_id_list
+                    'accounts' :account_id_list,
+                    'pager':pager,
                  }
         return request.render("budget_expense_management.portal_my_expenses", values)
-    
-    
-    
-

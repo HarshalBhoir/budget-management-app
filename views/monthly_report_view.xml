@@ -16,11 +16,11 @@
 		<xpath expr="//li[@id='promote-menu']" position="after">
 		
 		<li class="dropdown">
-             <a class="dropdown-toggle o-no-caret waves" data-toggle="dropdown" href="/my_expenses">Expense</a>
-             <div class="dropdown-menu oe_promote_menu" role="menu">
+             <a class="dropdown-toggle o-no-caret waves" data-toggle="dropdown"  href="#">Expense</a>
+             <ul class="dropdown-menu oe_promote_menu" role="menu">
                  <a role="menuitem" data-action="promote-current-page" href="/expense_form"  class="dropdown-item">Add Expense</a>
              	 <a role="menuitem" data-action="promote-current-page" href="/my_expenses"  class="dropdown-item">My Expenses</a>
-             </div>
+             </ul>
         </li>
         <li class="dropdown">
              <a class="dropdown-toggle o-no-caret waves" data-toggle="dropdown" href="/my_incomes">Income</a>
@@ -62,7 +62,7 @@
 	        		<input type="hidden" t-att-value="current_year" id="current_year"/>
 	        			  <h4 style="color:#417c8a;" >
 				           		  
-				           <select id="change_month" class="new" style="font-size: 1rem;width:30%; padding-left: 22px; height: 32px;">
+				           <select id="change_month" class="new" style="font-size: 1rem;width:30%;  height: 32px;">
 				           
 		                            <t t-foreach='month' t-as='m'>
 		                                <option t-value="m" t-att-selected="m == current_month">
@@ -71,7 +71,7 @@
 		                            </t>
 		                     </select>  
 		                     
-		                     <select id="change_year" style="font-size: 1rem;width:24%; padding-left:22px; height: 32px;">
+		                     <select id="change_year" style="font-size: 1rem;width:24%; height: 32px;">
 		                            <t t-foreach='years' t-as='year'>
 		                            <!-- <input type="text" t-att-value="year" />
 		                             <input type="text" t-att-value="current_year" /> -->

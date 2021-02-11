@@ -11,7 +11,6 @@ from odoo.exceptions import  ValidationError
 class BudgetedExpense(models.Model):
     _name = 'budgeted.expense'
     
-    
     def _default_line_ids(self):
         exp_categ_list = []
         exp_categ_ids = self.env['expense.category'].search([('show_default','=', True)])

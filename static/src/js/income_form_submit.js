@@ -1,6 +1,7 @@
 odoo.define('budget_expense_management.income_form_submit', function(){
 "use_strict"	
 	
+$(document).ready(function(){
 	function sendData() {
 		const XHR = new XMLHttpRequest();
 		const FD = new FormData(form);
@@ -12,14 +13,14 @@ odoo.define('budget_expense_management.income_form_submit', function(){
 			GXHR.addEventListener("load", function() {
 				$('body').html(GXHR.responseText);		
 			});
-  			GXHR.open( "GET", "/my_incomes" );
+            GXHR.open( "GET", "/my_incomes", true);
 			console.log('-----111---------')
 			GXHR.send();
 			window.history.pushState({}, null, "/my_incomes");
 
 		});
 		
-		XHR.open( "POST", "/my_incomes" );
+		XHR.open( "POST", "/my_incomes",true);
 		console.log('----eeee----------')
 		XHR.send(FD);
 		
@@ -38,7 +39,7 @@ odoo.define('budget_expense_management.income_form_submit', function(){
 	   }
 	
 	
-	
+	});
 	
 	
 	

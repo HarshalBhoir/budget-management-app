@@ -2,17 +2,15 @@
 <odoo>
 
  <template id="cash_transfer_template" name="Transfer Cash">
- 
   	<t t-call="website.layout">
         <div class="oe_structure">
           <div class="container form-top">
-          	 <form id="transferCash"  data-model_name="account.money.transfer"  method="POST">
+              <form id="transferCash"  data-model_name="account.money.transfer" data-success_page="/cash_transfer" method="POST">
           	 	  <div class="form-row">
                       <div class="form-group col-md-6 col-12 o_website_form_required_custom">
                           <label class="col-form-label" id="date" for="date"> Date</label>
                           <input  class="form-control o_website_form_input" type="date" name="date" t-att-value="request.params.get('date', '')" required=""/>                      	 
                       </div>
-                     
                       <div class="form-group col-md-6 col-12">
                           <label class="col-form-label" for="note">Note</label>
                           <input type="text" class="form-control" id="note" name="note" placeholder="Note" />
@@ -24,8 +22,7 @@
 								     <t t-foreach="accounts" t-as="account">
 								          <option required="" t-att-value="int(account.id)" ><t t-esc="account.name"/></option>
 								     </t>
-								 </select> 
-                      	  
+								 </select>
                       </div>
                       <div class="form-group col-md-4 col-12">
                           <label class="col-form-label" for="note">Amount</label>
@@ -40,27 +37,19 @@
                                        <t t-esc="account.name"/>
                                    </option>
                                </t>
-                          </select>                      	  
+                          </select>
                       </div>
-                      
-
                        <div class="form-group row ">
                            <button type="submit" style="margin-left: 500px;margin-top: 40px;" class="btn btn-primary menu_button">Transfer</button>
                         </div>
-                   </div>  
+                   </div>
                      <div id="transfer_success" class="alert alert-success alert-dismissable">
 			            <button type="button" class="close" data-dismiss="alert" aria-label="Close">&amp;times;</button>
 			            Transaction from <span id="src_account" ></span> account to <span id="dest_account" ></span> account is successful.
-			        </div>                  
+			        </div>
              </form >
           </div>
          </div>
-         
      </t>
-	
  </template>
- 
- 
-	
- 
  </odoo>

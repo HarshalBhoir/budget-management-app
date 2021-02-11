@@ -99,7 +99,6 @@ class BankAccountLine(models.Model):
     def account_balance(self, acct, last_day):
        
         debit, credit = self.amount_transfered(acct, last_day)
-        #print('----- Debit Credit', debit, credit)
         start_date = date(last_day.year, 1, 1)
         account_line_id = self.env['bank.account.line'].sudo().search([('bank_id','=',acct.id),
                                                                           ('year','=',str(last_day.year))])
@@ -128,7 +127,6 @@ class BankAccountLine(models.Model):
     @api.model
     def _cron_create_opening_balance(self):
         today = datetime.today()
-#         start_date = date(today.year, 1, 1)
         last_day = date(2020 , 12, 31)
         year = self.env['budget.year'].search([('name','=', 2021)])
         year1 = self.env['budget.year'].search([('name','=', 2020)])

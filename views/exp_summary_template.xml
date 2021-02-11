@@ -2,12 +2,10 @@
 <odoo>
 
  <template id="expense_form_template" name="Add Expense Form">
- 
   	<t t-call="website.layout">
         <div class="oe_structure">
           <div class="container form-top">
           	 <form id="myForm"  data-model_name="expense.summary" enctype="multipart/form-data" method="POST">
-          	 	
                         <div class="form-group row form-field o_website_form_required_custom">
                             <label class="col-lg-3 col-md-4 col-form-label" for="date">Date</label>
                             <div class="col-lg-7 col-md-8">
@@ -17,22 +15,17 @@
                         <div required="" class="form-group row form-field o_website_form_required_custom">
                             <label class="col-lg-3 col-md-4 col-form-label" for="account">Account</label>
                             <div class="col-lg-7 col-md-8">
-<!--                                 <input type="text" class="form-control o_website_form_input" name="account" t-att-value="request.params.get('account', '')" required=""/>
- -->                            
  								<select  class="form-control" name="account" required="">
  									<option  value="" t-att-selected="Select">Select</option>
 								     <t t-foreach="accounts" t-as="account">
 								          <option required="" t-attf-value="#{account.id}" ><t t-esc="account.name"/></option>
 								     </t>
-								 </select> 
- 
+								 </select>
  						</div>
                         </div>
                         <div class="form-group row form-field o_website_form_required_custom">
                             <label class="col-lg-3 col-md-4 col-form-label" for="category">Category</label>
                             <div class="col-lg-7 col-md-8">
-<!--                                 <input type="text" class="form-control o_website_form_input" name="category" required="" t-att-value="request.params.get('category', '')" />
- -->
  							<select  class="form-control" name="category" required="required">
  									<option value="">Select</option>
 								     <t t-foreach="categories" t-as="category">
@@ -65,12 +58,11 @@
                     </form >
           </div>
          </div>
-         
      </t>
 	
  </template>
- 
- 
+
+
 	<template id="budget_portal" inherit_id="portal.portal_breadcrumbs" >
 		<xpath expr="//ol[hasclass('o_portal_submenu')]/li" position="after">
 			<t t-if="my_expenses" >
@@ -83,7 +75,6 @@
 	<template id="portal_my_expenses" name="My Expenses">
 	
 	        <t t-call="portal.portal_layout">
-	        <script  type="text/javascript" src="/budget_expense_management/static/src/js/update_expense.js" />
 	            <t t-set="breadcrumbs_searchbar" t-value="True"/>
 	            <t t-call="portal.portal_searchbar" class="breadcrumb-item active">
 	                <t t-set="title">Expenses</t>
@@ -96,6 +87,18 @@
 	            <t t-if="not my_expenses">
 	                <p>There are currently no expenses for your account.</p>
 	            </t>
+	             <div class="dropdown  dropdown_sorty_by" style="margin-left: 1000px;">
+             <a role="button" href="#" class="dropdown-toggle btn btn-primary" data-toggle="dropdown">
+                 <t >
+                     <span>Sort by</span>
+                 </t>
+             </a>
+             <div class="dropdown-menu" role="menu">
+                     <a role="menuitem" id="new" rel="noindex,nofollow" t-att-href="'/my_expenses?order=date%20asc'" class="dropdown-item">
+                        Date (Old to New)
+                     </a>
+             </div>
+         </div>
 	            <t t-if="my_expenses" t-call="portal.portal_table">
 	                <thead>
 	                    <tr class="active">
@@ -107,14 +110,11 @@
 	                        <th class="text-right">Amount Spent</th>
 	                    </tr>
 	                </thead>
-	                
 	                <t t-foreach="my_expenses" t-as="expenses">
-	                
 	                <input type="hidden" id="all_account_ids"  t-att-value="accounts"/>
 	                <input type="hidden" id="all_categories"  t-att-value="catg_ids"/>
 	                    <tr>	
 		                    <td  class="text-right"> <input type="hidden" id="datepicker" /><span id= "date" t-field="expenses.date" /></td>
-		                   
 	                        <td id="catg" class="text-right">
 	                        		<span id="catg_id" t-field="expenses.exp_category_id.name"/>
 			                        <select style="display:none" name="catg_dropdown" id="catg_dropdown">
@@ -134,7 +134,6 @@
 								  </t>
 							</select>
                             </td>
-                            
 	                        <td class="text-right"><span t-field="expenses.amount"/></td>    
 	                        <td class="text-right">
 	            <button  t-att-value="expenses.id" id="edit_e" name="edit_exp" class="btn btn-primary fa fa-edit"></button>
@@ -148,8 +147,44 @@
 	                    </tr>
 	                </t>
 	            </t>
-	            
 	        </t>
 	    </template>
- 
+
+	    <!--Added Pager with Start and End only for Budget webpage -->
+	    <template id="portal.portal_table" name="My Portal Table">
+        <div t-if="pager and 'budget' in pager.keys()" class="o_portal_pager top text-center">
+            <t t-call="budget_expense_management.budgetpager"/>
+        </div>
+        <div t-attf-class="table-responsive border rounded border-top-0 #{classes if classes else ''}">
+            <table class="table rounded mb-0 bg-white o_portal_my_doc_table">
+                <t t-raw="0"/>
+            </table>
+        </div>
+        <div t-if="pager and 'budget' not in pager.keys()" class="o_portal_pager text-center">
+            <t t-call="portal.pager"/>
+        </div>
+        <div t-if="pager and 'budget' in pager.keys()" class="o_portal_pager bottom text-center">
+            <t t-call="budget_expense_management.budgetpager"/>
+        </div>
+    </template>
+    <template id="budgetpager" name="Pager">
+        <ul t-if="pager['page_count'] > 1" t-attf-class="#{ classname or '' } pagination m-0 #{_classes}" t-att-style="style or None">
+            <li  t-attf-class="page-item #{'disabled' if pager['page']['num'] == 1 else ''}">
+                <a t-att-href=" pager['start']" class="page-link" t-raw="Start">Start</a>
+            </li>
+            <li t-attf-class="page-item #{'disabled' if pager['page']['num'] == 1 else ''}">
+                <a t-att-href=" pager['page_previous']['url'] if pager['page']['num'] != 1 else None" class="page-link">Prev</a>
+            </li>
+            <t t-foreach="pager['pages']" t-as="page">
+                <li t-attf-class="page-item #{'active' if page['num'] == pager['page']['num'] else ''}"> <a t-att-href="page['url']" class="page-link" t-raw="page['num']"></a></li>
+            </t>
+            <li t-attf-class="page-item #{'disabled' if pager['page']['num'] == pager['page_count'] else ''}">
+                <a t-att-href="pager['page_next']['url'] if pager['page']['num'] != pager['page_count'] else None" class="page-link">Next</a>
+            </li>
+            <li  t-attf-class="page-item #{'disabled' if pager['page']['num'] == pager['page_count'] else ''}">
+                <a t-att-href=" pager['end']" class="page-link" t-raw="End">End</a>
+            </li>
+        </ul>
+    </template>
+
  </odoo>
