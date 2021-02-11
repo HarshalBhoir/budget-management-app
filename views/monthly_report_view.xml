@@ -141,8 +141,8 @@
  
 		            <div class="col-lg-4" >
 				 	       <div >
-					            <h4  class="card-header bg-primary text-center">Income</h4>
-					            <div class="table-responsive ">
+							       <h4  class="card-header bg-primary text-center">Income</h4>
+					            <div class="table-responsive">
 						            <table class="table" border="1" style="border:1px solid #dee2e6;">
 						            	<thead>
 										    <tr >
