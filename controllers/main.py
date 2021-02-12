@@ -18,7 +18,6 @@ def mypager(self, url, total, page=1, step=30, scope=5, url_args=None):
 
     pmin = max(page - int(math.floor(scope/2)), 1)
     pmax = min(pmin + scope, page_count)
-
     if pmax - pmin < scope:
         pmin = pmax - scope if pmax - scope > 0 else 1
 

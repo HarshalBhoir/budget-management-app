@@ -3,7 +3,8 @@ from odoo.http import request, Response
 from datetime import timedelta, date, datetime
 import json
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
-
+from .main import mypager
+PPG = 20
 
 class IncomeSummary(http.Controller):
 
@@ -30,21 +31,33 @@ class IncomeSummary(http.Controller):
         })
         return Response("success", status=200)
 
-    @http.route('/my_incomes', type='http', auth="user", website=True, methods=['GET'],  csrf=False)
-    def show_incomes(self, **post):
+    @http.route(['/my_incomes','/my_incomes/page/<int:page>'], type='http', auth="user", website=True, methods=['GET'],  csrf=False)
+    def show_incomes(self, page=0, ppg=False, **post):
         """
         Return all incomes
         """
+        if ppg:
+            try:
+                ppg = int(ppg)
+            except ValueError:
+                ppg = PPG
+            post["ppg"] = ppg
+        else:
+            ppg = PPG
         income_summary = request.env['income.summary']
         domain = [('user_id','=', request.env.user.id),('date','<=',fields.Date.today())]
-        income_ids = income_summary.search(domain)
+        income_ids = income_summary.search(domain, order=post.get('order'))
         inc_catg_ids = request.env['income.category'].search([]).mapped('name')
         account_id_list = request.env['bank.account'].search([]).mapped('name')
         account_ids = ','.join(account_id_list)
-        values = { 
-                    'my_incomes': income_ids.sudo(), 
+        pager = mypager(self, url='/my_incomes', total=len(income_ids), page=page, step=ppg)
+        offset = pager['offset']
+        income_ids = income_ids[offset: offset + ppg]
+        values = {
+                    'my_incomes': income_ids,
                     'catg_ids' : inc_catg_ids,
-                    'accounts' :account_id_list
+                    'accounts' :account_id_list,
+                    'pager':pager,
                  }
         return request.render("budget_expense_management.portal_my_incomes", values)
 

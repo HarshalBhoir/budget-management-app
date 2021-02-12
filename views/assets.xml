@@ -9,7 +9,7 @@
 			<script  type="text/javascript" src="/budget_expense_management/static/src/js/income_form_submit.js" />
 	        <script type="text/javascript" src="/budget_expense_management/static/src/js/cash_transfer.js" />
 			<link rel="stylesheet" href="/budget_expense_management/static/src/css/budget.css"/>
-			<script  type="text/javascript" src="/budget_expense_management/static/src/js/update_expense.js" />
-        </xpath>
+<!-- 			<script  type="text/javascript" src="/budget_expense_management/static/src/js/update_expense.js" />
+ -->        </xpath>
     </template>
 </odoo>
