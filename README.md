@@ -1,4 +1,4 @@
-**Budgent-Management-App**
+## **Budgent-Management-App**
  - Budget management module (for Odoo 12) developed to track and manage household expenses. 
  - Features include 
     - Option to budget income/expense for a month. 
@@ -18,9 +18,11 @@
     ![Monthly Summary](https://github.com/minupjames/budget-management-app/blob/master/screenshots/MonthlySummary.png)
     
     **Expense Summary**
+    
     ![Expense Summary](https://github.com/minupjames/budget-management-app/blob/master/screenshots/ExpenseSummary.png)
     
     **Income Summary**
+    
     ![Income Summary](https://github.com/minupjames/budget-management-app/blob/master/screenshots/IncomeSummary.png)
     
     **Create/List Bank Accounts**
@@ -36,6 +38,7 @@
     ![Income category](https://github.com/minupjames/budget-management-app/blob/master/screenshots/Incomecategory.png)
     
     **Cash Transfer**
+    
     ![Cash Transfer](https://github.com/minupjames/budget-management-app/blob/master/screenshots/CashTransfer.png)
     ![Cash Transfer Backend](https://github.com/minupjames/budget-management-app/blob/master/screenshots/CashTransferBacked.png)
     
