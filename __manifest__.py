@@ -10,7 +10,7 @@
     'description': "",
     'website': 'https://www.odoo.com/page/crm',
     'depends': [
-        'base','portal','web','website',
+        'base','portal','website','auth_signup'
     ],
     'data': [
        'security/ir.model.access.csv',

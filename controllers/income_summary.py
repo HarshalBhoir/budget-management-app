@@ -45,7 +45,7 @@ class IncomeSummary(http.Controller):
         else:
             ppg = PPG
         income_summary = request.env['income.summary']
-        domain = [('user_id','=', request.env.user.id),('date','<=',fields.Date.today())]
+        domain = [('date','<=',fields.Date.today())]
         income_ids = income_summary.search(domain, order=post.get('order'))
         inc_catg_ids = request.env['income.category'].search([]).mapped('name')
         account_id_list = request.env['bank.account'].search([]).mapped('name')
@@ -83,7 +83,7 @@ class IncomeSummary(http.Controller):
             inc_id = request.env['income.summary'].browse([int(data['inc_id'])])
             if inc_id:
                 if data['date']:
-                    date_obj = datetime.strptime(data['date'],'%Y-%m-%d').date()
+                    date_obj = datetime.strptime(data['date'],'%m/%d/%Y').date()
                     inc_id.date = date_obj.strftime(DF)
                 if data['category']:
                     catg_obj = request.env['income.category'].search([('name','=', data['category'])])

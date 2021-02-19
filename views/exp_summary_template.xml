@@ -67,8 +67,8 @@
  
 	<template id="portal_my_expenses" name="My Expenses">
 	        <t t-call="portal.portal_layout">
-	           <script type="text/javascript" src="/budget_expense_management/static/src/js/update_expense.js" />
-			        <div class="alert alert-success alert-dismissable">
+<!-- 	           <script type="text/javascript" src="/budget_expense_management/static/src/js/update_expense.js" />
+ -->			        <div class="alert alert-success alert-dismissable">
 			            <button type="button" class="close" data-dismiss="alert" aria-label="Close" >&amp;times;</button>
 			            Success! your expense has been saved.
 			        </div>
@@ -106,7 +106,7 @@
 	                <input type="hidden" id="all_account_ids"  t-att-value="accounts"/>
 	                <input type="hidden" id="all_categories"  t-att-value="catg_ids"/>
 	                    <tr>	
-		                    <td  class="text-right"> <input type="hidden" id="datepicker" /><span id= "date" t-field="expenses.date" /></td>
+		                    <td  class="text-right"> <input type="hidden" t-att-value="expenses.date" id="datepicker" /><span id= "date" t-field="expenses.date" /></td>
 	                        <td id="catg" class="text-right">
 	                        		<span id="catg_id" t-field="expenses.exp_category_id.name"/>
 			                        <select style="display:none" name="catg_dropdown" id="catg_dropdown">
@@ -127,15 +127,13 @@
 							</select>
                             </td>
 	                        <td class="text-right"><span t-field="expenses.amount"/></td>    
-	                        <td class="text-right">
-	            <button  t-att-value="expenses.id" id="edit_e" name="edit_exp" class="btn btn-primary fa fa-edit"></button>
-	            <button style="display:none" t-att-value="expenses.id"  id="save_e" name="save_exp" class="btn btn-primary fa fa-save"></button>
+	                        <td class="text-right" >
+	            <button groups="budget_expense_management.budget_admin" t-att-value="expenses.id" id="edit_e" name="edit_exp" class="btn btn-primary fa fa-edit"></button>
+	            <button groups="budget_expense_management.budget_admin" style="display:none" t-att-value="expenses.id"  id="save_e" name="save_exp" class="btn btn-primary fa fa-save"></button>
 	                        </td>
-	                        <!-- <td class="text-right">
-	            <button  t-att-value="expenses.id"  id="save_e" name="save_exp" class="btn btn-primary fa fa-save"></button>
-	                        </td> -->
-	                        <td class="text-right">
-	            <button  t-att-id="'button_id_%s' % (expenses.id)" name="del_exp"  t-att-value="expenses.id" class="btn btn-primary fa fa-trash-o"></button>
+	                   
+	                        <td class="text-right" >
+	            <button groups="budget_expense_management.budget_admin" t-att-id="'button_id_%s' % (expenses.id)" name="del_exp"  t-att-value="expenses.id" class="btn btn-primary fa fa-trash-o"></button>
 	                        </td>
 	                    </tr>
 	                </t>

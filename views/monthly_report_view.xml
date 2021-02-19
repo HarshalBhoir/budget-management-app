@@ -1,58 +1,110 @@
 <?xml  version="1.0" encoding="utf-8" ?>
 <odoo>
 	 <template id="monthly_report_footer_inherit" inherit_id="website.layout" >
-			<!--  <xpath expr="//header" position="replace">
-			</xpath>  -->
+			 <xpath expr="//header" position="replace">
+			</xpath> 
 		    <xpath expr="//footer" position="replace">
 		    </xpath>
      </template>    
 
 	
-	<!-- <li>
-         <a href="/web#action=budget_expense_management.action_expense_summary" >Expense Summary</a>
-    </li> -->
-	 
+	
 	<template id="new_budget_nav" inherit_id="website.user_navbar" name="Nav Bar Budget">
+	
+		<xpath expr="//ul[@id='oe_applications']/li[1]" position="replace">
+			<li class="dropdown active" groups="budget_expense_management.budget_admin">
+                        <a class="dropdown-toggle full" data-toggle="dropdown" href="#">
+                            <i class="fa fa-th-large"/> WEBSITE
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <t t-set="debug_param" t-value="'?&amp;debug=' if debug else ''"/>
+                            <t t-as="menu" t-foreach="menu_data['children']">
+                                <a role="menuitem"
+                                   t-attf-class="dropdown-item #{'oe_menu_toggler' if menu.get('children') else 'oe_menu_leaf'}"
+                                   t-att-data-action-id="menu['action'] and menu['action'].split(',')[1] or None"
+                                   t-att-data-action-model="menu['action'] and menu['action'].split(',')[0] or None"
+                                   t-att-data-menu="menu['id']"
+                                   t-att-data-menu-xmlid="menu.get('xmlid')"
+                                   t-att-href="'/web%s#menu_id=%s&amp;action=%s' % (debug_param, menu['id'], menu['action'] and menu['action'].split(',')[1] or '')">
+                                    <i t-attf-class="fa #{menu.get('icon')} fa-lg fa-fw" t-if="menu.get('icon')" role="img" aria-label="Menu" title="Menu"/>
+                                    <span class="oe_menu_text">
+                                        <t t-esc="menu['name']"/>
+                                    </span>
+                                </a>
+                            </t>
+                        </div>
+                    </li>
+		</xpath>
 		<xpath expr="//li[@id='promote-menu']" position="after">
-		
 		<li class="dropdown">
              <a class="dropdown-toggle o-no-caret waves" data-toggle="dropdown"  href="#">Expense</a>
              <ul class="dropdown-menu oe_promote_menu" role="menu">
-                 <a role="menuitem" data-action="promote-current-page" href="/expense_form"  class="dropdown-item">Add Expense</a>
+                 <a role="menuitem" groups="budget_expense_management.budget_admin" data-action="promote-current-page" href="/expense_form"  class="dropdown-item">Add Expense</a>
              	 <a role="menuitem" data-action="promote-current-page" href="/my_expenses"  class="dropdown-item">My Expenses</a>
              </ul>
         </li>
         <li class="dropdown">
              <a class="dropdown-toggle o-no-caret waves" data-toggle="dropdown" href="/my_incomes">Income</a>
              <div class="dropdown-menu oe_promote_menu" role="menu">
-                 <a role="menuitem" data-action="promote-current-page" href="/income_form"  class="dropdown-item">Add Income</a>
+                 <a role="menuitem" groups="budget_expense_management.budget_admin" data-action="promote-current-page" href="/income_form"  class="dropdown-item">Add Income</a>
              	 <a role="menuitem" data-action="promote-current-page" href="/my_incomes"  class="dropdown-item">My Income</a>
              </div>
         </li>
 		 <li class="nav-item">
-	        <a class="nav-link" href="/cash_transfer">Cash Transfer</a>
+	        <a class="nav-link" groups="budget_expense_management.budget_admin" href="/cash_transfer">Cash Transfer</a>
 	      </li>
 	      <li>
-	    	 <a class="nav-link" href="/budget_monthly_rpt/">Budget Expense Summary</a>
+	    	 <a class="nav-link"  href="/budget_monthly_rpt/">Budget Expense Summary</a>
 	      </li>
 	       <li>
-	    	 <a class="nav-link" href="/annual_summary/">Annual Summary</a>
+	    	 <a class="nav-link"  href="/annual_summary/">Annual Summary</a>
 	      </li>
+	
 		</xpath>
 		<xpath expr="//li[@id='promote-menu']" position="replace">
+		
 		</xpath>
 		<xpath expr="//li[@id='customize-menu']" position="replace">
 		</xpath>
 		<xpath expr="//li[@id='content-menu']" position="replace">
 		</xpath>
 		<xpath expr="//li[@groups='website.group_multi_website']" position="replace">
+		
 		</xpath>
+		
+		<xpath expr="//li[@id='new-content-menu']" position="replace">
+			<div id="log" style="padding: 5px;margin-right: 44px;" >
+	               <ul class="nav navbar-nav ml-auto text-right" id="nav-item dropdown">
+	                   <li class="nav-item divider" t-ignore="true" t-if="not user_id._is_public()"/>
+	                   <li class="nav-item dropdown" t-ignore="true" t-if="not user_id._is_public()">
+	                       <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+	                           <b>
+	                               <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/>
+	                           </b>
+	                       </a>
+	                       <div class="dropdown-menu js_usermenu" role="menu">
+	                           <a id="o_logout" class="dropdown-item" t-attf-href="/web/session/logout?redirect=/web/login" role="menuitem">Logout</a>
+	                       </div>
+	                   </li>
+	               </ul>
+	           </div>
+		</xpath>
+		<xpath expr="//li[@id='mobile-menu']" position="replace">
+			
+		</xpath>
+		
+		<xpath expr="//li[@id='edit-page-menu']" position="replace">
+			
+		</xpath>
+		
+		
 	</template>
+	
 	
      <template id="budget_montly_report_template" name="Montly report" >
 	 	<t t-call="website.layout">
 	    	<div class="oe_structure">
-	        	<div class="section">
+	        	<div class="section" style="margin-top: 30px;">
 	        	<div class="row mt-2">
 	        		<div class="col-lg-4" >
 	        			  <h4 style="color:#417c8a;text-align:center;"><t t-esc="current_month"/> Budget</h4>

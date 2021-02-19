@@ -3,7 +3,6 @@ odoo.define('budget_expense_management.change_year_annual_summary', function(req
 
 	$(document).ready(function() {
 	function update_summary(year){
-				console.log('44444444',year);
 				var xhttp = new XMLHttpRequest();
 				xhttp.onload = function () {
 				if (xhttp.readyState == XMLHttpRequest.DONE && xhttp.status == 200) {
@@ -17,7 +16,12 @@ odoo.define('budget_expense_management.change_year_annual_summary', function(req
 			};
 	$("#change_annual_year").change(function() {
 			var year = $("#change_annual_year").val();
+			sessionStorage.setItem("Year", year);
 			update_summary(year);
 		});
+		
+		
 	});
+	
+	
 });

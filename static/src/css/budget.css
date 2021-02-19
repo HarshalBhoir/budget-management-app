@@ -31,7 +31,7 @@ a {
 }
 
 a:hover {
-    color:#173b67;
+    color: white;
 }
 
 .summary_box_text {
@@ -109,7 +109,7 @@ select {
     border: 1px solid #c5c3b875;
     outline: none;
     appearance: none;
-    background: #c5607373;
+    background: #89e7c873;
     background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='34' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
     background-repeat: no-repeat;
     background-position-x: 100%;
@@ -165,6 +165,10 @@ select.annual_year_dp
 .o_portal_pager.bottom {
     margin-left: 600px;
     margin-top: 10px;
+}
+.o_main_navbar .show .dropdown-toggle {
+	
+	background-color:#417c8a;
 }
 
 @media

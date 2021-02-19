@@ -4,10 +4,11 @@
 	<template id="annual_summary_report_template" name="Annual Summary">
 	<t t-call="website.layout">
 	    	<div class="oe_structure">
+	    	<input type="hidden" t-att-value="current_year" id="c_year"/>
                        <select id="change_annual_year" class="annual_year_dp" >
 		                            <t t-foreach='year' t-as='y'>
-		                                <option t-att-value="int(y)" t-att-selected="int(y) == current_year">
-		                                    <t t-esc='int(y)' />
+		                                <option t-att-value="(y)" t-att-selected="int(y) == int(current_year)">
+		                                    <t t-esc='(y)' />
 		                                </option>
 		                            </t>
 		               </select>

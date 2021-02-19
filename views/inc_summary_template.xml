@@ -70,7 +70,6 @@
 
 <template id="portal_my_incomes" name="All Income">
 	        <t t-call="portal.portal_layout">
-	        <script type="text/javascript" src="/budget_expense_management/static/src/js/update_income.js" />
 			        <div class="alert alert-success alert-dismissable">
 			            <button type="button" class="close" data-dismiss="alert" aria-label="Close" >&amp;times;</button>
 			            Success! your income has been saved.
@@ -130,11 +129,11 @@
                             </td>
 	                        <td class="text-right"><span t-field="income.amount"/></td>
 	                        <td class="text-right">
-	            <button  t-att-value="income.id" id="edit_income" name="edit_income" class="btn btn-primary fa fa-edit"></button>
-	            <button style="display:none" t-att-value="income.id"  id="save_income" name="save_income" class="btn btn-primary fa fa-save"></button>
+	            <button groups="budget_expense_management.budget_admin" t-att-value="income.id" id="edit_income" name="edit_income" class="btn btn-primary fa fa-edit"></button>
+	            <button groups="budget_expense_management.budget_admin" style="display:none" t-att-value="income.id"  id="save_income" name="save_income" class="btn btn-primary fa fa-save"></button>
 	                        </td>
 	                        <td class="text-right">
-	            <button  t-att-id="'button_id_%s' % (income.id)" name="del_income"  t-att-value="income.id" class="btn btn-primary fa fa-trash-o"></button>
+	            <button groups="budget_expense_management.budget_admin" t-att-id="'button_id_%s' % (income.id)" name="del_income"  t-att-value="income.id" class="btn btn-primary fa fa-trash-o"></button>
 	                        </td>
 	                    </tr>
 	                </t>

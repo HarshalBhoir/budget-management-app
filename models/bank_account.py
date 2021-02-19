@@ -1,3 +1,4 @@
+    
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
@@ -97,7 +98,7 @@ class BankAccountLine(models.Model):
         return debit_amount, credit_amount
     
     def account_balance(self, acct, last_day):
-       
+        
         debit, credit = self.amount_transfered(acct, last_day)
         start_date = date(last_day.year, 1, 1)
         account_line_id = self.env['bank.account.line'].sudo().search([('bank_id','=',acct.id),
@@ -127,9 +128,8 @@ class BankAccountLine(models.Model):
     @api.model
     def _cron_create_opening_balance(self):
         today = datetime.today()
-        last_day = date(2020 , 12, 31)
-        year = self.env['budget.year'].search([('name','=', 2021)])
-        year1 = self.env['budget.year'].search([('name','=', 2020)])
+        last_day = date(today.year-1 , 12, 31)
+        year = self.env['budget.year'].search([('name','=', today.year)])
 
         accounts = self.env['bank.account'].search([])
         for account in accounts:
@@ -147,3 +147,4 @@ class BudgetYear(models.Model):
     
     name = fields.Char('Year', copy=False)
     current = fields.Boolean('current', copy=False)
+

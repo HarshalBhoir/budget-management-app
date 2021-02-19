@@ -18,7 +18,7 @@ odoo.define('budget_expense_management.myexpenses', function(){
 			xhttp.send(data);
 		})
 	
-		$('td').on('click', function(e) {
+		$('td').on('click', function() {
 			if ('text-right td_marked' == ($(this).context.className)) {
 				var accounts = $("#all_account_ids").val();
 				var choices = JSON.parse(accounts.replace(/'/g, '"'));
@@ -39,36 +39,61 @@ odoo.define('budget_expense_management.myexpenses', function(){
 			});
 		$('button[name="edit_exp"]').on('click', function() { 
 			var currentTD = $(this).closest('tr').find('td').not(':nth-child(8), :nth-child(7), :nth-child(9)');   
+			var td_date = $(this).closest('tr').find('td')[0];
 			$('tr').removeClass('marked'); 
 			$("td").removeClass('td_marked');
 			$.each(currentTD, function () {
 	                      $(this).prop('contenteditable', true)
 						  $(this).addClass('td_marked');
 	                  });
+
 			$(this).closest('tr').find('td:first-child').click(function() {
 				$('tr').find('td:first-child').prop('contenteditable', false);
-				$(this).closest('tr').find('td:first-child').context.firstElementChild.type = 'date';
-				$(this).closest('tr').find('td:first-child').context.lastElementChild.style.display = 'none';
-				});
-				$(this)[0].parentNode.children[0].style.display='none';
-				$(this)[0].parentNode.children[1].style.display='inline-block';
-				$(this)[0].parentNode.children[1].contentEditable = false;
+				var e_new_date = td_date.children[1].innerText;
+				var e_date_split = e_new_date.split('/');
+				var e_date_str = e_date_split[2] + '-' + e_date_split[0] + '-' + e_date_split[1];
+			/*td_date.children[0] - datepicker element */
+			/*td_date.children[1] - date span element */
+				td_date.children[0].value = e_date_str;
+				td_date.children[0].innerText = $(this).closest('tr').find('td')[0].children[1].innerText;
+				td_date.children[0].innerHTML = $(this).closest('tr').find('td')[0].children[1].innerText;
+				td_date.children[0].type = 'date';
+				td_date.children[0].style.display = 'inline-block';
+				td_date.children[1].style.display = 'none';
+			});
+				td_date.parentNode.children[6].children[0].style.display='none';
+				td_date.parentNode.children[6].children[1].style.display='inline-block';
+				td_date.parentNode.children[6].children[1].contentEditable = false;
 			});
 		
 		$('button[name="save_exp"]').click(function(e){
 			e.preventDefault();
 			var data = {}
 			var all_tds = $(this).closest('tr').find('td');
+			var date_td = all_tds[0];
+			var account_td= all_tds[4];
+			var category_td= all_tds[1];
 			var xhttp = new XMLHttpRequest();
 			var currentTD = $(this).closest('tr').find('td').not(':nth-child(8), :nth-child(7), :nth-child(9)');   
 			$.each(currentTD, function () {
                  	$(this).prop('contenteditable', false)
 				  	$(this).removeClass('td_marked');
 					});
+			/* Toggle Edit/Save button */
+			date_td.parentNode.children[6].children[1].style.display='none';
+			date_td.parentNode.children[6].children[0].style.display='inline-block';
+			date_td.parentNode.children[6].children[0].contentEditable = false;
 			
-			$(this)[0].parentNode.children[1].style.display='none';
-			$(this)[0].parentNode.children[0].style.display='inline-block';
-			$(this)[0].parentNode.children[0].contentEditable = false;
+			/* hide datepicker and assign its value to stae span element*/
+			var new_date = $(this).closest('tr').find('td')[0].children[0].value;
+			var date_split = new_date.split('-');
+			var date_str = date_split[1] + '/' + date_split[2] + '/' + date_split[0];
+			console.log('date: ', new_date, date_str);
+			
+			date_td.children[1].value = date_str;
+			date_td.children[1].innerHTML = date_str;
+			date_td.children[0].style.display = 'none';
+			date_td.children[1].style.display = 'block';
 			
 			xhttp.onload = function () {
 				if (xhttp.readyState == XMLHttpRequest.DONE) {
@@ -76,31 +101,37 @@ odoo.define('budget_expense_management.myexpenses', function(){
 							$(".alert").fadeTo(2000, 500).slideUp(500, function() {
 							    	$(".alert").slideUp(500);
 							    });
-							all_tds[4].children[1].style.display = 'none';
-							all_tds[4].children[0].style.display = 'block';
-							all_tds[4].children[0].value = all_tds[4].children[1].value;
-							all_tds[4].children[0].textContent = all_tds[4].children[1].value;
+						/* account dropdown is changed to span account elemnt while saving expense  */
+							account_td.children[1].style.display = 'none';
+							account_td.children[0].style.display = 'block';
+							account_td.children[0].value = account_td.children[1].value;
+							account_td.children[0].textContent = account_td.children[1].value;
+						/* category dropdown is changed to span category elemnt while saving expense  */	
+							category_td.children[1].style.display = 'none';
+							category_td.children[0].style.display = 'block';
+							category_td.children[0].value = category_td.children[1].value;
+							category_td.children[0].textContent = category_td.children[1].value;
 						
 					}
 				}
 			}
-			if (all_tds[4].children[1].value){
-				var amount = all_tds[4].children[1].value;
+			if (account_td.children[1].value){
+				var account = account_td.children[1].value;
 			} else {
-				var amount = all_tds[4].children[0].textContent;
+				var account = account_td.children[0].textContent;
 			}
-			if (all_tds[1].children[1].value){
-				var category = all_tds[1].children[1].value;
+			if (category_td.children[1].value){
+				var category = category_td.children[1].value;
 			} else {
-				var category = all_tds[1].children[0].textContent;
+				var category = category_td.children[0].textContent;
 			}
 			
 			var data = {
-				'date': $(this).closest('tr').find('td')[0].firstElementChild.value,
+				'date': date_str,
 				'category':category,
 				'description':all_tds[2].textContent,
 				'location':all_tds[3].textContent,
-				'account':amount,
+				'account':account,
 				'amount':all_tds[5].textContent,
 				'exp_id':this.value
 			}

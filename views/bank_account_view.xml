@@ -68,11 +68,11 @@
         <field name="view_mode">tree,form</field>        
     </record>
     
-    <menuitem id="menu_bank_account_line"
+    <!-- <menuitem id="menu_bank_account_line"
                 name="Opening Balance"
                 action="action_bank_account_line"
                 parent="menu_budget_config"
-                 />
+                 /> -->
     
      <!-- <menuitem action="account.action_account_journal_form" id="new_menu_action_account_journal_form" parent="menu_budget_config" />
 	  <menuitem id="new_menu_board_journal_1" name="Overview" action="account.open_account_journal_dashboard_kanban" parent="menu_budget_config" sequence="1"/> -->

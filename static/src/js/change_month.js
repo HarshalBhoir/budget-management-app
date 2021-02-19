@@ -18,15 +18,15 @@ odoo.define('budget_expense_management.change_month', function(require) {
 		
 		$("#change_month").change(function() {
 			var month_name = $("#change_month").val();
-			var year = $("#change_year").val();
+			var b_year = $("#change_year").val();
 			sessionStorage.setItem("SelItem", month_name);
-			update_summary(month_name, year);
+			update_summary(month_name, b_year);
 		});
 		$("#change_year").change(function() {
 			var month_name = $("#change_month").val();
-			var year = $("#change_year").val();
-			sessionStorage.setItem("SelYear", year);
-			update_summary(month_name, year);
+			var s_year = $("#change_year").val();
+			sessionStorage.setItem("SelYear", s_year);
+			update_summary(month_name, s_year);
 		});
 	});
 	
@@ -40,6 +40,11 @@ odoo.define('budget_expense_management.change_month', function(require) {
 		if (SelYear) {
 		 var curr_year = $('input[id="current_year"]').attr('value');
 		 $('#change_year').val(curr_year);
+		}
+		var Year = sessionStorage.getItem("Year");
+		if (Year) {
+		 var c_year = $('input[id="c_year"]').attr('value');
+		 $('#change_annual_year').val(c_year);
 		}
     }
 });

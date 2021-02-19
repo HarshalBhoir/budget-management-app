@@ -4,6 +4,7 @@ class IncomeSummary(models.Model):
     _name = 'income.summary'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Income Summary'
+    _order = 'date desc'
     
     name = fields.Char('Description',track_visibility="onchange")
     date = fields.Date('Date',track_visibility="onchange")

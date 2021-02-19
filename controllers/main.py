@@ -69,7 +69,7 @@ class BudgetMonthlyReport(http.Controller):
             sum =0
             budgtd_exp_categ_id = request.env['budget.expense.lines'].search([('budgeted_id','=',budgeted_exp_id.id), 
                                                                               ('category_id','=',categ.id)])
-            expenses = request.env['expense.summary'].search([('user_id', '=', request.uid),
+            expenses = request.env['expense.summary'].search([
                                                               ('date','>=', first_day),
                                                               ('date','<=', last_day),
                                                               ('exp_category_id','=',categ.id)])
@@ -97,7 +97,7 @@ class BudgetMonthlyReport(http.Controller):
             sum = 0
             expected_inc_categ_id = request.env['expected.income.line'].search([('exp_income_id','=',exp_income_monthly_id.id), 
                                                                               ('category_id','=',inc_categ.id)])
-            income_ids = request.env['income.summary'].search([('user_id', '=', request.uid),
+            income_ids = request.env['income.summary'].search([
                                                           ('date','>=', first_day),
                                                           ('date','<=', last_day),
                                                           ('income_categ_id','=',inc_categ.id)])
@@ -126,7 +126,7 @@ class BudgetMonthlyReport(http.Controller):
         return account_dict   
      
      
-    def get_monthly_investment(self,first_day, last_day):
+    def get_monthly_investment(self, first_day, last_day):
         accounts = request.env['bank.account'].sudo().search([('type','=','investment')])
         sum = 0
         for acct in accounts:
@@ -187,7 +187,7 @@ class BudgetMonthlyReport(http.Controller):
                     'source_journal_id':post.get('source_account', False),
                     'dest_journal_id':post.get('destination_account', False),
                     'amount':post.get('amount', False),
-                    'create_uid': request.env.user.id
+                    
         })
         return Response("success", status=200)
     
@@ -308,7 +308,7 @@ class BudgetMonthlyReport(http.Controller):
             for month in months:
                 sum =0
                 first_day, last_day = self.get_first_and_last_day(month, year)
-                expense_ids = request.env['expense.summary'].search([('user_id', '=', request.uid),
+                expense_ids = request.env['expense.summary'].search([
                                                               ('date','>=', first_day),
                                                               ('date','<=', last_day),
                                                               ('exp_category_id','=',exp.id)])
@@ -339,4 +339,5 @@ class BudgetMonthlyReport(http.Controller):
             'investment_total': self.account_sum(),
             'savings_total': self.account_sum(investment_acc=False)
             }
+        print('-------------',vals['net_worth'],vals['investment_total'],vals['savings_total'])
         return request.render("budget_expense_management.annual_summary_report_template", vals)

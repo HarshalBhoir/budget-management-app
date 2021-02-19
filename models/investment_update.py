@@ -3,7 +3,6 @@
 
 from datetime import date
 from odoo import api, fields, models
-from odoo.addons.budget_expense_management.controllers.main import BudgetMonthlyReport
 
 
 class InvestmentInterest(models.Model):
